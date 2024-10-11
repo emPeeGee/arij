@@ -1,85 +1,42 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+import AppHeader from './components/AppHeader.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="flex h-screen bg-green-300">
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <AppHeader />
+      <Adfs></Adfs>
+      <div class="flex h-full">
+        <nav class="flex w-72 h-full bg-pink-500">
+          <div class="w-full flex mx-auto px-6 py-8">
+            <div
+              class="w-full h-full flex items-center justify-center text-gray-900 text-xl border-4 border-gray-900 border-dashed"
+            >
+              Sidebar
+            </div>
+          </div>
+        </nav>
+        <main class="flex flex-col w-full bg-white overflow-x-hidden overflow-y-auto mb-14">
+          <div class="flex w-full mx-auto px-6 py-8">
+            <div
+              class="flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed"
+            >
+              <RouterView />
+            </div>
+          </div>
+        </main>
+        <nav class="flex w-72 h-full bg-yellow-400">
+          <div class="w-full flex mx-auto px-6 py-8">
+            <div
+              class="w-full h-full flex items-center justify-center text-gray-900 text-xl border-4 border-gray-900 border-dashed"
+            >
+              Rightbar
+            </div>
+          </div>
+        </nav>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
