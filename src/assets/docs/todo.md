@@ -23,3 +23,5 @@ Project settings
 👥 User Roles and Permissions
 🔒 Authentication (OAuth and Email)
 📱 Responsive Design (Mobile-friendly)
+
+Icons: https://flowbite.com/icons/
