@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import CogIcon from '@/components/icons/CogIcon.vue'
 import ColumnIcon from '@/components/icons/ColumnIcon.vue'
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+
+// TODO: Is this the idiomatic Vue way to store such things?
+const routes = ref([
+  { id: 'kanbanBoard', to: '/kanban', icon: ColumnIcon, label: 'Kanban board' },
+  { id: 'projectSettings', to: '/projectSettings', icon: CogIcon, label: 'Project settings' }
+])
 </script>
 
 <template>
@@ -29,15 +37,16 @@ import ColumnIcon from '@/components/icons/ColumnIcon.vue'
           </div>
         </div>
 
-        <div class="flex flex-col">
-          <div class="flex justify-start items-center gap-2 p-2">
-            <ColumnIcon />
-            <p class="text-base text-gray-700">Kanban board</p>
-          </div>
-
-          <div class="flex justify-start items-center gap-2 p-2 rounded bg-slate-300">
-            <CogIcon highlight />
-            <p class="text-base text-primary-400">Project settings</p>
+        <div class="flex flex-col gap-0.5">
+          <div v-for="route in routes" :key="route.id">
+            <RouterLink :to="route.to">
+              <div
+                class="flex justify-start items-center gap-2 p-2 rounded transition-colors duration-300 hover:bg-slate-300"
+              >
+                <component :is="route.icon"></component>
+                <p class="text-base">{{ route.label }}</p>
+              </div>
+            </RouterLink>
           </div>
 
           <hr class="my-4 h-0.5 border-t-0 bg-slate-300 dark:bg-slate-400" />
@@ -55,3 +64,25 @@ import ColumnIcon from '@/components/icons/ColumnIcon.vue'
     </div>
   </nav>
 </template>
+
+<style scoped>
+.router-link-active,
+.router-link-exact-active {
+  div {
+    @apply bg-slate-300;
+
+    p,
+    svg {
+      @apply text-primary-400;
+    }
+  }
+}
+
+.router-link div {
+  @apply text-gray-700;
+
+  svg {
+    @apply text-gray-700;
+  }
+}
+</style>

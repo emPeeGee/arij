@@ -1,12 +1,7 @@
-<script setup lang="ts">
-defineProps<{
-  highlight?: boolean
-}>()
-</script>
+<script setup lang="ts"></script>
 <template>
   <svg
-    class="w-6 h-6"
-    :class="highlight ? 'text-primary-400' : 'text-slate-600'"
+    class="w-6 h-6 text-slate-600"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
