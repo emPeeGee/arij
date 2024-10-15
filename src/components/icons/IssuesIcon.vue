@@ -1,3 +1,4 @@
+<script setup lang="ts"></script>
 <template>
   <svg
     class="w-6 h-6 text-slate-600"

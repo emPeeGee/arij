@@ -1,23 +1,6 @@
 <script setup lang="ts">
-import CogIcon from '@/components/icons/CogIcon.vue'
-import ColumnIcon from '@/components/icons/ColumnIcon.vue'
-import BacklogIcon from '@/components/icons/BacklogIcon.vue'
-import IssuesIcon from '@/components/icons/IssuesIcon.vue'
-import ChartIcon from '@/components/icons/ChartIcon.vue'
-import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-
-// TODO: Is this the idiomatic Vue way to store such things?
-const routes = ref([
-  { id: 'kanbanBoard', to: '/kanban', icon: ColumnIcon, label: 'Kanban board' },
-  { id: 'projectSettings', to: '/projectSettings', icon: CogIcon, label: 'Project settings' }
-])
-
-const notImplementedRoutes = ref([
-  { id: 'backlog', to: '/backlog', icon: BacklogIcon, label: 'Backlog' },
-  { id: 'issues', to: '/issues', icon: IssuesIcon, label: 'Issues' },
-  { id: 'reports', to: '/reports', icon: ChartIcon, label: 'Reports' }
-])
+import { ROUTES, NOT_IMPLEMENTED_ROUTES } from './constants'
 </script>
 
 <template>
@@ -47,7 +30,7 @@ const notImplementedRoutes = ref([
         </div>
 
         <div class="flex flex-col gap-0.5">
-          <div v-for="route in routes" :key="route.id">
+          <div v-for="route in ROUTES" :key="route.id">
             <RouterLink :to="route.to">
               <div
                 class="flex justify-start items-center gap-2 p-2 rounded transition-colors duration-300 hover:bg-slate-300"
@@ -61,7 +44,7 @@ const notImplementedRoutes = ref([
           <hr class="my-4 h-0.5 border-t-0 bg-slate-300 dark:bg-slate-400" />
 
           <div
-            v-for="route in notImplementedRoutes"
+            v-for="route in NOT_IMPLEMENTED_ROUTES"
             :key="route.id"
             class="group flex justify-start items-center gap-2 p-2 rounded hover:cursor-not-allowed"
           >
