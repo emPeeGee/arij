@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import CogIcon from '@/components/icons/CogIcon.vue'
 import ColumnIcon from '@/components/icons/ColumnIcon.vue'
+import BacklogIcon from '@/components/icons/BacklogIcon.vue'
+import IssuesIcon from '@/components/icons/IssuesIcon.vue'
+import ChartIcon from '@/components/icons/ChartIcon.vue'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
@@ -8,6 +11,12 @@ import { RouterLink } from 'vue-router'
 const routes = ref([
   { id: 'kanbanBoard', to: '/kanban', icon: ColumnIcon, label: 'Kanban board' },
   { id: 'projectSettings', to: '/projectSettings', icon: CogIcon, label: 'Project settings' }
+])
+
+const notImplementedRoutes = ref([
+  { id: 'backlog', to: '/backlog', icon: BacklogIcon, label: 'Backlog' },
+  { id: 'issues', to: '/issues', icon: IssuesIcon, label: 'Issues' },
+  { id: 'reports', to: '/reports', icon: ChartIcon, label: 'Reports' }
 ])
 </script>
 
@@ -52,12 +61,21 @@ const routes = ref([
           <hr class="my-4 h-0.5 border-t-0 bg-slate-300 dark:bg-slate-400" />
 
           <div
-            v-for="item in [1, 2, 3, 4, 5]"
-            :key="item"
-            class="flex justify-start items-center gap-2 p-2"
+            v-for="route in notImplementedRoutes"
+            :key="route.id"
+            class="group flex justify-start items-center gap-2 p-2 rounded hover:cursor-not-allowed"
           >
-            <ColumnIcon />
-            <p class="text-base text-gray-700">Kanban board</p>
+            <div>
+              <component :is="route.icon" />
+            </div>
+            <div class="relative w-full h-full flex justify-start items-center">
+              <p class="text-base text-gray-700">{{ route.label }}</p>
+              <div
+                class="group-hover:opacity-100 opacity-0 absolute top-0 left-0 inline-block py-0.5 px-2 bg-slate-300 w-full z-10"
+              >
+                <p class="text-xs leading-5 text-gray-700 font-bold uppercase">Not implemented</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
