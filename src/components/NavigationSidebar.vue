@@ -4,7 +4,7 @@ import ColumnIcon from '@/components/icons/ColumnIcon.vue'
 </script>
 
 <template>
-  <nav class="flex w-72 h-full bg-slate-200">
+  <nav class="flex w-72 h-full bg-slate-100">
     <div class="w-full flex mx-auto px-4 py-8">
       <div class="w-full h-full flex flex-col text-gray-900 text-xl">
         <div class="flex mb-6 gap-2">
@@ -37,7 +37,7 @@ import ColumnIcon from '@/components/icons/ColumnIcon.vue'
 
           <div class="flex justify-start items-center gap-2 p-2 rounded bg-slate-300">
             <CogIcon highlight />
-            <p class="text-base text-blue-800">Project settings</p>
+            <p class="text-base text-primary-400">Project settings</p>
           </div>
 
           <hr class="my-4 h-0.5 border-t-0 bg-slate-300 dark:bg-slate-400" />

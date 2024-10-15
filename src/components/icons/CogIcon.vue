@@ -6,7 +6,7 @@ defineProps<{
 <template>
   <svg
     class="w-6 h-6"
-    :class="highlight ? 'text-blue-800' : 'text-slate-600'"
+    :class="highlight ? 'text-primary-400' : 'text-slate-600'"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
