@@ -17,6 +17,9 @@ const columns = ref<Column[]>([
 ])
 
 const draggedCard = ref<Card | null>(null)
+const dragImage = ref<HTMLDivElement | null>(null)
+const dx = ref(0)
+const dy = ref(0)
 const draggedFromIndex = ref<number | null>(null)
 const draggedFromColumn = ref<number | null>(null)
 
@@ -29,11 +32,19 @@ const onDragStart = (event: DragEvent, card: Card, cardIndex: number, colIndex: 
   draggedCard.value = card
   draggedFromIndex.value = cardIndex
   draggedFromColumn.value = colIndex
+  console.log('set it', colIndex)
   event.dataTransfer?.setData('text', '')
 }
 
 const onDragEnter = (event: DragEvent, colIndex: number) => {
   if (draggedFromColumn.value !== null) {
+    console.log(
+      'entering columh',
+      colIndex,
+      draggedFromColumn.value,
+      placeholderIndex.value,
+      columns.value[colIndex].cards.length
+    )
     placeholderVisible.value = true
     placeholderColumn.value = colIndex
     placeholderHeight.value = 60 // Default height for the placeholder
@@ -63,11 +74,20 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
 }
 
 const onDragLeave = () => {
+  console.log('leaving')
   placeholderVisible.value = false
   placeholderIndex.value = null
 }
 
 const onDrop = (event: DragEvent, targetColumnIndex: number) => {
+  event.preventDefault()
+  console.log(
+    'on drop',
+    targetColumnIndex,
+    draggedCard.value,
+    draggedFromColumn.value,
+    placeholderIndex.value
+  )
   if (draggedCard.value && draggedFromColumn.value !== null && placeholderIndex.value !== null) {
     const targetColumn = columns.value[targetColumnIndex]
     const sourceColumn = columns.value[draggedFromColumn.value]
@@ -86,6 +106,13 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
     placeholderIndex.value = null
   }
 }
+
+const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
+  console.log('drag over')
+  event.preventDefault()
+  // Ensure that the placeholderIndex updates even during fast dragging
+  placeholderIndex.value = cardIndex
+}
 </script>
 
 <template>
@@ -96,7 +123,7 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
           v-for="(column, colIndex) in columns"
           :key="colIndex"
           class="h-full min-h-96 min-w-48 w-full bg-slate-200 px-2 kanban-column shadow rounded"
-          @dragover.prevent
+          @dragover.prevent="onDragOver($event, column.cards.length, colIndex)"
           @dragenter.prevent="onDragEnter($event, colIndex)"
           @dragleave="onDragLeave($event)"
           @drop="onDrop($event, colIndex)"
@@ -112,6 +139,7 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
             v-for="(card, cardIndex) in column.cards"
             :key="cardIndex"
             class="kanban-card cursor-grab"
+            @dragover.prevent="onDragOver($event, cardIndex, colIndex)"
             @dragstart="onDragStart($event, card, cardIndex, colIndex)"
             @dragenter.prevent="onDragEnterCard($event, cardIndex, colIndex)"
             draggable="true"
@@ -134,6 +162,7 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
             v-if="placeholderVisible && placeholderColumn === colIndex && placeholderIndex !== null"
             :style="{ height: placeholderHeight + 'px' }"
             class="bg-blue-200 rounded-md transition-all duration-300"
+            @dragenter.prevent
           ></div>
         </div>
       </div>
