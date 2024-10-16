@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ROUTES, NOT_IMPLEMENTED_ROUTES} from './constants'
+import { ROUTES, NOT_IMPLEMENTED_ROUTES } from './constants'
 import NavLink from './NavLink.vue'
 </script>
 
@@ -9,10 +9,18 @@ import NavLink from './NavLink.vue'
       <div class="w-full h-full flex flex-col text-gray-900 text-xl">
         <div class="flex mb-6 gap-2">
           <div class="flex items-center">
-            <svg class="w-10 h-10 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-              height="24" fill="currentColor" viewBox="0 0 24 24">
+            <svg
+              class="w-10 h-10 text-green-800"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
-                d="M14.5 3 12 7.156 9.857 3H2l10 18L22 3h-7.5ZM4.486 4.5h2.4L12 13.8l5.107-9.3h2.4L12 18.021 4.486 4.5Z" />
+                d="M14.5 3 12 7.156 9.857 3H2l10 18L22 3h-7.5ZM4.486 4.5h2.4L12 13.8l5.107-9.3h2.4L12 18.021 4.486 4.5Z"
+              />
             </svg>
           </div>
           <div class="flex flex-col">

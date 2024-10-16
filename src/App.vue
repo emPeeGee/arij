@@ -13,10 +13,8 @@ import NavigationSidebar from './components/NavigationSidebar.vue'
         <NavigationSidebar />
         <div class="flex flex-col w-full bg-white overflow-x-hidden overflow-y-auto">
           <AppHeader />
-          <main class="flex w-full mx-auto px-6 py-8">
-            <div
-              class="flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed"
-            >
+          <main class="flex w-full mx-auto px-4 py-8">
+            <div class="flex flex-col w-full h-full text-gray-900 text-xl">
               <RouterView />
             </div>
           </main>
