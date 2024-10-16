@@ -11,7 +11,7 @@ export const ROUTES: AppRoute[] = [
 ]
 
 export const NOT_IMPLEMENTED_ROUTES: AppRoute[] = [
-  { id: 'backlog', to: '/backlog', icon: BacklogIcon, label: 'Backlog' },
-  { id: 'issues', to: '/issues', icon: IssuesIcon, label: 'Issues' },
-  { id: 'reports', to: '/reports', icon: ChartIcon, label: 'Reports' }
+  { id: 'backlog', icon: BacklogIcon, label: 'Backlog' },
+  { id: 'issues', icon: IssuesIcon, label: 'Issues' },
+  { id: 'reports', icon: ChartIcon, label: 'Reports' }
 ]
