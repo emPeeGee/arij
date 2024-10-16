@@ -122,7 +122,10 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
         <div
           v-for="(column, colIndex) in columns"
           :key="colIndex"
-          class="h-full min-h-96 min-w-48 w-full bg-slate-200 px-2 kanban-column shadow rounded"
+          class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
+          :style="{
+            minHeight: `calc(12rem + ${column.cards.length * 68}px`
+          }"
           @dragover.prevent="onDragOver($event, column.cards.length, colIndex)"
           @dragenter.prevent="onDragEnter($event, colIndex)"
           @dragleave="onDragLeave($event)"

@@ -24,7 +24,13 @@ export default {
       ...customColors,
       primary: customColors.blue
     },
-    extend: {}
+    extend: {
+      transitionProperty: {
+        height: 'height',
+        minheight: 'min-height',
+        spacing: 'margin, padding'
+      }
+    }
   },
   plugins: []
 }
