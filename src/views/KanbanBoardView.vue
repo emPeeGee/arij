@@ -17,13 +17,9 @@ const columns = ref<Column[]>([
 ])
 
 const draggedCard = ref<Card | null>(null)
-const dragImage = ref<HTMLDivElement | null>(null)
-const dx = ref(0)
-const dy = ref(0)
 const draggedFromIndex = ref<number | null>(null)
 const draggedFromColumn = ref<number | null>(null)
 
-const placeholderVisible = ref(false)
 const placeholderColumn = ref<number | null>(null)
 const placeholderHeight = ref<number>(0)
 const placeholderIndex = ref<number | null>(null)
@@ -32,20 +28,19 @@ const onDragStart = (event: DragEvent, card: Card, cardIndex: number, colIndex: 
   draggedCard.value = card
   draggedFromIndex.value = cardIndex
   draggedFromColumn.value = colIndex
-  console.log('set it', colIndex)
+  console.log('[drag] start', colIndex)
   event.dataTransfer?.setData('text', '')
 }
 
 const onDragEnter = (event: DragEvent, colIndex: number) => {
   if (draggedFromColumn.value !== null) {
     console.log(
-      'entering columh',
+      '[drag] entering column',
       colIndex,
       draggedFromColumn.value,
       placeholderIndex.value,
       columns.value[colIndex].cards.length
     )
-    placeholderVisible.value = true
     placeholderColumn.value = colIndex
     placeholderHeight.value = 60 // Default height for the placeholder
     placeholderIndex.value = columns.value[colIndex].cards.length // Default to the end of the column
@@ -53,13 +48,13 @@ const onDragEnter = (event: DragEvent, colIndex: number) => {
 }
 
 const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number) => {
+  console.log('[drag] enter card')
   if (draggedFromColumn.value !== null) {
     const targetCard = event.currentTarget as HTMLElement
     const middleY = targetCard.offsetTop + targetCard.offsetHeight / 2
     const cursorY = event.clientY
 
     // Set placeholder before or after the target card based on mouse position
-    placeholderVisible.value = true
     placeholderColumn.value = colIndex
     placeholderHeight.value = targetCard.clientHeight
 
@@ -73,10 +68,10 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
   }
 }
 
-const onDragLeave = () => {
-  console.log('leaving')
-  placeholderVisible.value = false
+const onDragLeave = (event: DragEvent) => {
   placeholderIndex.value = null
+
+  console.log('[drag] leave')
 }
 
 const onDrop = (event: DragEvent, targetColumnIndex: number) => {
@@ -99,7 +94,6 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
     targetColumn.cards.splice(placeholderIndex.value, 0, draggedCard.value)
 
     // Clear drag state
-    placeholderVisible.value = false
     draggedCard.value = null
     draggedFromIndex.value = null
     draggedFromColumn.value = null
@@ -108,7 +102,7 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
 }
 
 const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
-  console.log('drag over')
+  // console.log('[drag] over')
   event.preventDefault()
   // Ensure that the placeholderIndex updates even during fast dragging
   placeholderIndex.value = cardIndex
@@ -148,7 +142,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
             draggable="true"
           >
             <div
-              class="w-full bg-white shadow-md p-2 mb-2 transition transform hover:scale-105 hover:shadow-lg"
+              class="w-full bg-white shadow-md p-2 mb-2 transition transform hover:scale-105 hover:shadow-lg pointer-events-none"
             >
               <div class="w-full mb-2">
                 <p class="text-sm">{{ card.title }}</p>
@@ -162,10 +156,9 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
           </div>
 
           <div
-            v-if="placeholderVisible && placeholderColumn === colIndex && placeholderIndex !== null"
+            v-if="placeholderColumn === colIndex && placeholderIndex !== null"
             :style="{ height: placeholderHeight + 'px' }"
-            class="bg-blue-200 rounded-md transition-all duration-300"
-            @dragenter.prevent
+            class="bg-blue-200 rounded-md transition-all duration-300 pointer-events-none"
           ></div>
         </div>
       </div>
