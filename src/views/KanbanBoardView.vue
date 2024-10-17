@@ -34,6 +34,18 @@ const placeholderColumn = ref<number | null>(null)
 const placeholderHeight = ref<number>(0)
 const placeholderIndex = ref<number | null>(null)
 
+const refreshPlaceholder = (pCol: number | null, pIndex: number | null) => {
+  console.log('[placeholder]', pCol, pIndex)
+  columns.value = columns.value.map((column) => ({
+    ...column,
+    cards: column.cards.filter((card) => card.title !== 'Placeholder')
+  }))
+
+  if (pCol !== null && pIndex !== null) {
+    columns.value[pCol].cards.splice(pIndex, 0, { title: 'Placeholder' })
+  }
+}
+
 const onDragStart = (event: DragEvent, card: Card, cardIndex: number, colIndex: number) => {
   draggedCard.value = card
   draggedFromIndex.value = cardIndex
@@ -42,7 +54,7 @@ const onDragStart = (event: DragEvent, card: Card, cardIndex: number, colIndex: 
   event.dataTransfer?.setData('text', '')
 }
 
-const onDragEnter = (event: DragEvent, colIndex: number) => {
+const onDragEnterColumn = (event: DragEvent, colIndex: number) => {
   if (draggedFromColumn.value !== null) {
     console.log(
       '[drag] entering column',
@@ -51,9 +63,16 @@ const onDragEnter = (event: DragEvent, colIndex: number) => {
       placeholderIndex.value,
       columns.value[colIndex].cards.length
     )
-    placeholderColumn.value = colIndex
     placeholderHeight.value = 60 // Default height for the placeholder
-    placeholderIndex.value = columns.value[colIndex].cards.length // Default to the end of the column
+
+    // When dragging under the same column
+    if (colIndex === placeholderColumn.value) {
+      refreshPlaceholder(placeholderColumn.value, placeholderIndex.value)
+    } else {
+      placeholderColumn.value = colIndex
+      placeholderIndex.value = columns.value[colIndex].cards.length // Default to the end of the column
+      refreshPlaceholder(placeholderColumn.value, placeholderIndex.value)
+    }
   }
 }
 
@@ -66,15 +85,17 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
     // Set placeholder before or after the target card based on mouse position
     placeholderColumn.value = colIndex
     placeholderHeight.value = targetCard.clientHeight
-    // placeholderIndex.value = targetIndex
+    placeholderIndex.value = targetIndex
 
-    if (cursorY > middleY) {
-      // If dragging below the middle, insert after the target card
-      placeholderIndex.value = targetIndex + 1
-    } else {
-      // If dragging above the middle, insert before the target card
-      placeholderIndex.value = targetIndex
-    }
+    // if (cursorY > middleY) {
+    //   // If dragging below the middle, insert after the target card
+    //   placeholderIndex.value = targetIndex + 1
+    // } else {
+    //   // If dragging above the middle, insert before the target card
+    //   placeholderIndex.value = targetIndex
+    // }
+
+    refreshPlaceholder(placeholderColumn.value, placeholderIndex.value)
 
     console.log('[drag] enter card', targetIndex, cursorY, middleY)
   } else {
@@ -93,12 +114,15 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
   event.preventDefault()
   console.log(
     '[drag] on drop',
-    targetColumnIndex,
-    draggedCard.value,
     draggedFromColumn.value,
+    draggedFromIndex.value,
+    targetColumnIndex,
     placeholderIndex.value
   )
   if (draggedCard.value && draggedFromColumn.value !== null && placeholderIndex.value !== null) {
+    // Remove placeholder
+    refreshPlaceholder(null, null)
+
     const targetColumn = columns.value[targetColumnIndex]
     const sourceColumn = columns.value[draggedFromColumn.value]
 
@@ -108,18 +132,21 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
     // Add the card to the new position (using the placeholder index)
     targetColumn.cards.splice(placeholderIndex.value, 0, draggedCard.value)
 
-    // Clear drag state
+    // Clear drag and placeholder state
     draggedCard.value = null
     draggedFromIndex.value = null
     draggedFromColumn.value = null
     placeholderIndex.value = null
+    placeholderColumn.value = null
   }
 }
 
 const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
   event.preventDefault()
-  // Ensure that the placeholderIndex updates even during fast dragging
-  placeholderIndex.value = cardIndex
+
+  // // Ensure that the placeholderIndex updates even during fast dragging
+  // placeholderIndex.value = cardIndex
+
   console.log('[drag] over', cardIndex)
 }
 </script>
@@ -133,16 +160,14 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
           v-for="(column, colIndex) in columns"
           :key="colIndex"
           class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
-          :style="{
-            minHeight: `calc(12rem + ${column.cards.length * 68}px`
-          }"
+          :style="{ minHeight: `calc(12rem + ${column.cards.length * 80}px` }"
           @dragover.prevent
-          @dragenter.prevent="onDragEnter($event, colIndex)"
+          @dragenter.prevent="onDragEnterColumn($event, colIndex)"
           @dragleave="onDragLeave($event)"
           @drop="onDrop($event, colIndex)"
         >
           <!-- @dragover.prevent="onDragOver($event, column.cards.length, colIndex)" -->
-          <div class="w-full shadow-sm py-1">
+          <div class="w-full shadow-sm py-2 pb-6">
             <p
               class="text-sm uppercase text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap"
             >
@@ -152,14 +177,19 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
           <div
             v-for="(card, cardIndex) in column.cards"
             :key="cardIndex"
-            class="kanban-card cursor-grab"
+            :class="`kanban-card cursor-grab ${card.title === 'Placeholder' ? 'placeholder' : ''}`"
             @dragover.prevent="onDragOver($event, cardIndex, colIndex)"
             @dragstart="onDragStart($event, card, cardIndex, colIndex)"
             @dragenter.prevent="onDragEnterCard($event, cardIndex, colIndex)"
             draggable="true"
           >
             <div
-              class="w-full bg-white shadow-md p-2 mb-2 transition transform hover:scale-105 hover:shadow-lg pointer-events-none"
+              v-if="card.title === 'Placeholder'"
+              class="w-full bg-slate-300 shadow-md p-2 mb-2 transition pointer-events-none h-20 border-dashed border-2 border-slate-500"
+            ></div>
+            <div
+              v-else
+              class="w-full h-20 bg-white shadow-md p-2 mb-2 transition hover:scale-105 hover:shadow-lg pointer-events-none"
             >
               <div class="w-full mb-2">
                 <p class="text-sm">{{ card.title }}</p>
@@ -184,3 +214,24 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
     </div>
   </main>
 </template>
+
+<style>
+.placeholder {
+  max-height: 0;
+  opacity: 0;
+  animation: grow 0.2s ease-in-out forwards;
+  -webkit-animation: grow 0.2s ease-in-out forwards;
+}
+@-webkit-keyframes grow {
+  to {
+    max-height: 80px;
+    opacity: 1;
+  }
+}
+@keyframes grow {
+  to {
+    max-height: 80px;
+    opacity: 1;
+  }
+}
+</style>

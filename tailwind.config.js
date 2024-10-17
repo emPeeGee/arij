@@ -28,6 +28,7 @@ export default {
       transitionProperty: {
         height: 'height',
         minheight: 'min-height',
+        display: 'display',
         spacing: 'margin, padding'
       }
     }

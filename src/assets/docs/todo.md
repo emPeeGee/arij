@@ -25,3 +25,7 @@ Project settings
 📱 Responsive Design (Mobile-friendly)
 
 Icons: https://flowbite.com/icons/
+
+## TODO:
+
+1. Hover on kanban card effect doesn't work
