@@ -13,7 +13,17 @@ const columns = ref<Column[]>([
   { title: 'To Do', cards: [{ title: 'Task 1' }, { title: 'Task 2' }] },
   { title: 'In Progress', cards: [{ title: 'Task 3' }, { title: 'Task 4' }] },
   { title: 'Code review', cards: [{ title: 'Task 5' }] },
-  { title: 'Done', cards: [{ title: 'Task 6' }] }
+  {
+    title: 'Done',
+    cards: [
+      { title: 'Task 6' },
+      { title: 'Task 7' },
+      { title: 'Task 8' },
+      { title: 'Task 9' },
+      { title: 'Task 10' },
+      { title: 'Task 11' }
+    ]
+  }
 ])
 
 const draggedCard = ref<Card | null>(null)
@@ -48,7 +58,6 @@ const onDragEnter = (event: DragEvent, colIndex: number) => {
 }
 
 const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number) => {
-  console.log('[drag] enter card')
   if (draggedFromColumn.value !== null) {
     const targetCard = event.currentTarget as HTMLElement
     const middleY = targetCard.offsetTop + targetCard.offsetHeight / 2
@@ -57,6 +66,7 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
     // Set placeholder before or after the target card based on mouse position
     placeholderColumn.value = colIndex
     placeholderHeight.value = targetCard.clientHeight
+    // placeholderIndex.value = targetIndex
 
     if (cursorY > middleY) {
       // If dragging below the middle, insert after the target card
@@ -65,19 +75,24 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
       // If dragging above the middle, insert before the target card
       placeholderIndex.value = targetIndex
     }
+
+    console.log('[drag] enter card', targetIndex, cursorY, middleY)
+  } else {
+    console.log('[drag] enter card')
   }
 }
 
+// NOTE: Drag leave is fired after dragenter :/ https://stackoverflow.com/questions/43275189/html-5-drag-events-dragleave-fired-after-dragenter
 const onDragLeave = (event: DragEvent) => {
-  placeholderIndex.value = null
+  // placeholderIndex.value = null
 
-  console.log('[drag] leave')
+  console.log('[drag] leave', event)
 }
 
 const onDrop = (event: DragEvent, targetColumnIndex: number) => {
   event.preventDefault()
   console.log(
-    'on drop',
+    '[drag] on drop',
     targetColumnIndex,
     draggedCard.value,
     draggedFromColumn.value,
@@ -102,10 +117,10 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
 }
 
 const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
-  // console.log('[drag] over')
   event.preventDefault()
   // Ensure that the placeholderIndex updates even during fast dragging
   placeholderIndex.value = cardIndex
+  console.log('[drag] over', cardIndex)
 }
 </script>
 
@@ -113,6 +128,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
   <main>
     <div class="flex items-center justify-center">
       <div class="h-full overflow-auto flex flex-row flex-nowrap gap-2">
+        <!-- NOTE: https://stackoverflow.com/questions/8414154/html5-drop-event-doesnt-work-unless-dragover-is-handled -->
         <div
           v-for="(column, colIndex) in columns"
           :key="colIndex"
@@ -120,11 +136,12 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
           :style="{
             minHeight: `calc(12rem + ${column.cards.length * 68}px`
           }"
-          @dragover.prevent="onDragOver($event, column.cards.length, colIndex)"
+          @dragover.prevent
           @dragenter.prevent="onDragEnter($event, colIndex)"
           @dragleave="onDragLeave($event)"
           @drop="onDrop($event, colIndex)"
         >
+          <!-- @dragover.prevent="onDragOver($event, column.cards.length, colIndex)" -->
           <div class="w-full shadow-sm py-1">
             <p
               class="text-sm uppercase text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -159,7 +176,9 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
             v-if="placeholderColumn === colIndex && placeholderIndex !== null"
             :style="{ height: placeholderHeight + 'px' }"
             class="bg-blue-200 rounded-md transition-all duration-300 pointer-events-none"
-          ></div>
+          >
+            <p>{{ placeholderColumn + ' ' + placeholderIndex }}</p>
+          </div>
         </div>
       </div>
     </div>
