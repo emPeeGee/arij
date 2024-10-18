@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
 interface Card {
   title: string
 }
@@ -149,59 +150,57 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
 </script>
 
 <template>
-  <main>
-    <div class="flex items-center justify-center">
-      <div class="h-full overflow-auto flex flex-row flex-nowrap gap-2">
-        <!-- NOTE: https://stackoverflow.com/questions/8414154/html5-drop-event-doesnt-work-unless-dragover-is-handled -->
-        <div
-          v-for="(column, colIndex) in columns"
-          :key="colIndex"
-          class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
-          :style="{ minHeight: `calc(12rem + ${column.cards.length * 80}px` }"
-          @dragover.prevent
-          @dragenter.prevent="onDragEnterColumn($event, colIndex)"
-          @dragleave="onDragLeave($event)"
-          @drop="onDrop($event, colIndex)"
-        >
-          <!-- @dragover.prevent="onDragOver($event, column.cards.length, colIndex)" -->
-          <div class="w-full shadow-sm py-2 pb-6">
-            <p
-              class="text-sm uppercase text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap"
-            >
-              {{ column.title }}
-            </p>
-          </div>
-          <div
-            v-for="(card, cardIndex) in column.cards"
-            :key="cardIndex"
-            :class="`kanban-card cursor-grab ${card.title === 'Placeholder' ? 'placeholder' : ''}`"
-            @dragover.prevent="onDragOver($event, cardIndex, colIndex)"
-            @dragstart="onDragStart($event, card, cardIndex, colIndex)"
-            @dragenter.prevent="onDragEnterCard($event, cardIndex, colIndex)"
-            draggable="true"
+  <div class="flex items-center justify-center">
+    <div class="h-full overflow-auto flex flex-row flex-nowrap gap-2">
+      <!-- NOTE: https://stackoverflow.com/questions/8414154/html5-drop-event-doesnt-work-unless-dragover-is-handled -->
+      <div
+        v-for="(column, colIndex) in columns"
+        :key="colIndex"
+        class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
+        :style="{ minHeight: `calc(12rem + ${column.cards.length * 80}px` }"
+        @dragover.prevent
+        @dragenter.prevent="onDragEnterColumn($event, colIndex)"
+        @dragleave="onDragLeave($event)"
+        @drop="onDrop($event, colIndex)"
+      >
+        <!-- @dragover.prevent="onDragOver($event, column.cards.length, colIndex)" -->
+        <div class="w-full shadow-sm py-2 pb-6">
+          <p
+            class="text-sm uppercase text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap"
           >
-            <div
-              v-if="card.title === 'Placeholder'"
-              class="w-full bg-slate-300 shadow-md p-2 mb-2 transition pointer-events-none h-20 border-dashed border-2 border-slate-500"
-            ></div>
-            <div
-              v-else
-              class="w-full h-20 bg-white shadow-md p-2 mb-2 transition hover:scale-105 hover:shadow-lg pointer-events-none"
-            >
-              <div class="w-full mb-2">
-                <p class="text-sm">{{ card.title }}</p>
-              </div>
-              <div class="w-full flex flex-row flex-nowrap items-center justify-between">
-                <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
-                <div class="text-xs">AR-1000</div>
-                <div class="w-6 h-6 bg-green-500 rounded-full"></div>
-              </div>
+            {{ column.title }}
+          </p>
+        </div>
+        <div
+          v-for="(card, cardIndex) in column.cards"
+          :key="cardIndex"
+          :class="`kanban-card cursor-grab ${card.title === 'Placeholder' ? 'placeholder' : ''}`"
+          @dragover.prevent="onDragOver($event, cardIndex, colIndex)"
+          @dragstart="onDragStart($event, card, cardIndex, colIndex)"
+          @dragenter.prevent="onDragEnterCard($event, cardIndex, colIndex)"
+          draggable="true"
+        >
+          <div
+            v-if="card.title === 'Placeholder'"
+            class="w-full bg-slate-300 shadow-md p-2 mb-2 transition pointer-events-none h-20 border-dashed border-2 border-slate-500"
+          ></div>
+          <div
+            v-else
+            class="w-full h-20 bg-white shadow-md p-2 mb-2 transition hover:scale-105 hover:shadow-lg pointer-events-none"
+          >
+            <div class="w-full mb-2">
+              <p class="text-sm">{{ card.title }}</p>
+            </div>
+            <div class="w-full flex flex-row flex-nowrap items-center justify-between">
+              <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
+              <div class="text-xs">AR-1000</div>
+              <div class="w-6 h-6 bg-green-500 rounded-full"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style>
