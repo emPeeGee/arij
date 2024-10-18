@@ -31,7 +31,6 @@ const draggedFromIndex = ref<number | null>(null)
 const draggedFromColumn = ref<number | null>(null)
 
 const placeholderColumn = ref<number | null>(null)
-const placeholderHeight = ref<number>(0)
 const placeholderIndex = ref<number | null>(null)
 
 const refreshPlaceholder = (pCol: number | null, pIndex: number | null) => {
@@ -63,7 +62,6 @@ const onDragEnterColumn = (event: DragEvent, colIndex: number) => {
       placeholderIndex.value,
       columns.value[colIndex].cards.length
     )
-    placeholderHeight.value = 60 // Default height for the placeholder
 
     // When dragging under the same column
     if (colIndex === placeholderColumn.value) {
@@ -84,7 +82,6 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
 
     // Set placeholder before or after the target card based on mouse position
     placeholderColumn.value = colIndex
-    placeholderHeight.value = targetCard.clientHeight
     placeholderIndex.value = targetIndex
 
     // if (cursorY > middleY) {
@@ -201,14 +198,6 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
               </div>
             </div>
           </div>
-
-          <div
-            v-if="placeholderColumn === colIndex && placeholderIndex !== null"
-            :style="{ height: placeholderHeight + 'px' }"
-            class="bg-blue-200 rounded-md transition-all duration-300 pointer-events-none"
-          >
-            <p>{{ placeholderColumn + ' ' + placeholderIndex }}</p>
-          </div>
         </div>
       </div>
     </div>
@@ -219,8 +208,8 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
 .placeholder {
   max-height: 0;
   opacity: 0;
-  animation: grow 0.2s ease-in-out forwards;
-  -webkit-animation: grow 0.2s ease-in-out forwards;
+  animation: grow 0.1s ease-in-out forwards;
+  -webkit-animation: grow 0.1s ease-in-out forwards;
 }
 @-webkit-keyframes grow {
   to {
