@@ -2,6 +2,7 @@
 import StarIcon from '@/components/icons/StarIcon.vue'
 import Button from '@/components/Button.vue'
 import { ref } from 'vue'
+import MembersSelect from '@/components/MembersSelect.vue'
 
 interface Card {
   title: string
@@ -213,7 +214,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
         <div
           v-for="(column, colIndex) in columns"
           :key="colIndex"
-          class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
+          class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight duration-1000"
           :style="{ minHeight: `calc(12rem + ${column.cards.length * 80}px` }"
           @dragover.prevent
           @dragenter.prevent="onDragEnterColumn($event, colIndex)"
