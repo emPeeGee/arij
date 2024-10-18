@@ -6,8 +6,13 @@ import IssuesIcon from './icons/IssuesIcon.vue'
 import CogIcon from './icons/CogIcon.vue'
 
 export const ROUTES: AppRoute[] = [
-  { id: 'kanbanBoard', to: '/kanban', icon: ColumnIcon, label: 'Kanban board' },
-  { id: 'projectSettings', to: '/projectSettings', icon: CogIcon, label: 'Project settings' }
+  { id: 'kanbanBoard', to: '/projects/1/kanban', icon: ColumnIcon, label: 'Kanban board' },
+  {
+    id: 'projectSettings',
+    to: '/projects/1/settings',
+    icon: CogIcon,
+    label: 'Project settings'
+  }
 ]
 
 export const NOT_IMPLEMENTED_ROUTES: AppRoute[] = [

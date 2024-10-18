@@ -1,9 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SystemBreadcrumbs from './SystemBreadcrumbs.vue'
+</script>
 
 <template>
-  <header class="flex justify-between items-center bg-primary-50 p-4">
+  <header class="flex justify-between items-center p-4">
     <img alt="Vue logo" class="w-8 h-8" src="@/assets/logo.svg" width="125" height="125" />
-    <div class="flex">Left</div>
-    <div class="flex">Right</div>
+    <SystemBreadcrumbs />
   </header>
 </template>
