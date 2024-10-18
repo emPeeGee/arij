@@ -1,6 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteLocationNormalizedGeneric } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFound from '../components/NotFound.vue'
+import ProjectsView from '@/views/ProjectsView.vue'
+
+const idMapper: Record<string | number, string> = {
+  1: 'Vue Jira Clone'
+}
 
 // TODO: revise routing one more time
 const router = createRouter({
@@ -12,12 +17,17 @@ const router = createRouter({
       path: '/projects',
       name: 'Projects',
       meta: { breadCrumb: 'Projects' },
-      // component: null,
+      component: ProjectsView,
       children: [
         {
           path: ':id',
           name: 'Id',
-          // component: null,
+          meta: {
+            breadCrumb: (route: RouteLocationNormalizedGeneric) => {
+              console.log(route, route?.params)
+              return idMapper[route.params?.id as string] || 'NO ID'
+            }
+          },
           children: [
             {
               path: 'kanban',
