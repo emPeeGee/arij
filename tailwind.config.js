@@ -2,10 +2,10 @@ const colors = require('tailwindcss/colors')
 
 const customColors = {
   blue: {
-    50: '#DEEBFF',
-    100: '#4C9AFF',
-    200: '#2684FF',
-    300: '#0065FF',
+    50: '#E7F0FE',
+    100: '#b6d2fc',
+    200: '#85b4fa',
+    300: '#5496f8',
     400: '#0052CC',
     500: '#0747A6',
     600: '#003E8A',
