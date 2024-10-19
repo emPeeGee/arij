@@ -86,7 +86,8 @@ const onDragEnterCard = (event: DragEvent, targetIndex: number, colIndex: number
 
     // Set placeholder before or after the target card based on mouse position
     placeholderColumn.value = colIndex
-    placeholderIndex.value = targetIndex
+    // TODO: on first position it won't go, but it will fix the issue with flickering
+    placeholderIndex.value = targetIndex + 1
 
     // if (cursorY > middleY) {
     //   // If dragging below the middle, insert after the target card
