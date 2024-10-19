@@ -155,7 +155,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
 
 <template>
   <div class="flex flex-col gap-2">
-    <div class="flex justify-between py-4">
+    <div class="flex justify-between">
       <h1 class="text-2xl font-semibold">Board</h1>
       <div class="flex gap-1">
         <Button label="Hello" mode="primary"> </Button>
@@ -212,12 +212,12 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
     </div>
 
     <div class="flex items-center justify-center">
-      <div class="h-full overflow-auto flex flex-row flex-nowrap gap-2">
+      <div class="w-full h-full overflow-auto flex flex-row flex-nowrap gap-2">
         <!-- NOTE: https://stackoverflow.com/questions/8414154/html5-drop-event-doesnt-work-unless-dragover-is-handled -->
         <div
           v-for="(column, colIndex) in columns"
           :key="colIndex"
-          class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight duration-1000"
+          class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
           :style="{ minHeight: `calc(12rem + ${column.cards.length * 80}px` }"
           @dragover.prevent
           @dragenter.prevent="onDragEnterColumn($event, colIndex)"
