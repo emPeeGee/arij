@@ -3,6 +3,8 @@ import StarIcon from '@/components/icons/StarIcon.vue'
 import Button from '@/components/Button.vue'
 import { ref } from 'vue'
 import MembersSelect from '@/components/MembersSelect.vue'
+import BugIcon from '@/components/icons/IssueType/BugIcon.vue'
+import IssueTypeIcon from '@/components/IssueTypeIcon.vue'
 
 interface Card {
   title: string
@@ -255,7 +257,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
               <div class="w-full flex flex-row flex-nowrap items-center justify-between">
                 <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
                 <div class="text-xs">AR-1000</div>
-                <div class="w-6 h-6 bg-green-500 rounded-full"></div>
+                <IssueTypeIcon :issue="{ type: 'task' }" />
               </div>
             </div>
           </div>
