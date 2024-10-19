@@ -34,7 +34,7 @@ const crumbs = computed(() => {
       <RouterLink
         v-if="index < crumbs.length - 1"
         :to="item.to"
-        class="wiggle text-primary-400 hover:underline hover:text-primary-700"
+        class="wiggle text-primary-500 hover:underline hover:text-primary-600"
       >
         {{ item.text }}
       </RouterLink>

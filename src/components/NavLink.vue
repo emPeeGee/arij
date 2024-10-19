@@ -39,7 +39,7 @@ defineProps<{ route: AppRoute }>()
 
     p,
     svg {
-      @apply text-primary-400;
+      @apply text-primary-500;
     }
   }
 }

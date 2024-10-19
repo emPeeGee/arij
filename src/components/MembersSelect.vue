@@ -8,7 +8,7 @@
         'rounded-full h-9 w-9',
         'flex items-center justify-center cursor-pointer transition-all',
         'hover:-translate-y-1',
-        user.selected && 'border-2 border-primary-400',
+        user.selected && 'border-2 border-primary-500',
         user.selected ? 'scale-110' : 'scale-100'
       ]"
       :style="{
