@@ -46,6 +46,6 @@ const IconComponent = computed(() => iconMap[issue.type] || null)
 
 <template>
   <div v-if="IconComponent" class="flex items-center justify-center">
-    <component :is="IconComponent" class="h-6 w-6" />
+    <component :is="IconComponent" class="h-5 w-5" />
   </div>
 </template>

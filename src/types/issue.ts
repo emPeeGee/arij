@@ -26,10 +26,16 @@ export interface User {
 }
 
 export enum IssuePriority {
-  Low = 'Low',
-  Medium = 'Medium',
-  High = 'High',
-  Critical = 'Critical'
+  Blocker = 'blocker',
+  Critical = 'critical',
+  Highest = 'highest',
+  High = 'high',
+  Lowest = 'lowest',
+  Low = 'low',
+  Major = 'major',
+  Medium = 'medium',
+  Minor = 'minor',
+  Trivial = 'trivial'
 }
 
 // TODO? Should it be dynamic or hardcoded?

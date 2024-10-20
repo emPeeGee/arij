@@ -6,6 +6,7 @@ import MembersSelect from '@/components/MembersSelect.vue'
 import IssueTypeIcon from '@/components/IssueTypeIcon.vue'
 import { projectData } from '@/mockData'
 import { getContrastColor } from '@/core/utils/colors'
+import PriorityIcon from '@/components/PriorityIcon.vue'
 import type { Issue } from '@/types'
 
 const columns = ref(structuredClone(projectData.board.columns))
@@ -256,7 +257,10 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
                   </div>
                 </div>
                 <div class="text-xs">AR-1000</div>
-                <IssueTypeIcon :issue="issue" />
+                <div class="flex gap-1">
+                  <IssueTypeIcon :issue="issue" />
+                  <PriorityIcon :issue="issue" />
+                </div>
               </div>
             </div>
           </div>
