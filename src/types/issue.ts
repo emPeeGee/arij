@@ -67,7 +67,7 @@ export interface Issue {
   createdAt: string
   updatedAt: string
   comments: Comment[]
-  labels: Label[]
+  labels?: Label[]
   dueDate?: string
 }
 

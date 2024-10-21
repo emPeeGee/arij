@@ -5,6 +5,7 @@ import Button from '@/components/Button.vue'
 import MembersSelect from '@/components/MembersSelect.vue'
 import IssueTypeIcon from '@/components/IssueTypeIcon.vue'
 import { projectData } from '@/mockData'
+import { getContrastColor } from '@/core/utils/colors'
 import type { Issue } from '@/types'
 
 const columns = ref(structuredClone(projectData.board.columns))
@@ -229,6 +230,22 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
             >
               <div class="w-full">
                 <p class="text-sm">{{ issue.title }}</p>
+              </div>
+
+              <div v-if="issue.labels" class="flex">
+                <div
+                  v-for="label in issue.labels"
+                  :key="label.id"
+                  :style="{ backgroundColor: label.color }"
+                  class="flex h-full px-1 py-0.5 rounded-sm"
+                >
+                  <span
+                    class="text-xs uppercase font-medium tracking-wide"
+                    :style="{ color: getContrastColor(label.color) }"
+                  >
+                    {{ label.name }}
+                  </span>
+                </div>
               </div>
               <div class="w-full flex flex-row flex-nowrap items-center justify-between">
                 <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
