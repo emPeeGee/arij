@@ -1,38 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import StarIcon from '@/components/icons/StarIcon.vue'
 import Button from '@/components/Button.vue'
-import { ref } from 'vue'
 import MembersSelect from '@/components/MembersSelect.vue'
-import BugIcon from '@/components/icons/IssueType/BugIcon.vue'
 import IssueTypeIcon from '@/components/IssueTypeIcon.vue'
+import { projectData } from '@/mockData'
+import type { Issue } from '@/types'
 
-interface Card {
-  title: string
-}
+const columns = ref(structuredClone(projectData.board.columns))
 
-interface Column {
-  title: string
-  cards: Card[]
-}
-
-const columns = ref<Column[]>([
-  { title: 'To Do', cards: [{ title: 'Task 1' }, { title: 'Task 2' }] },
-  { title: 'In Progress', cards: [{ title: 'Task 3' }, { title: 'Task 4' }] },
-  { title: 'Code review', cards: [{ title: 'Task 5' }] },
-  {
-    title: 'Done',
-    cards: [
-      { title: 'Task 6' },
-      { title: 'Task 7' },
-      { title: 'Task 8' },
-      { title: 'Task 9' },
-      { title: 'Task 10' },
-      { title: 'Task 11' }
-    ]
-  }
-])
-
-const draggedCard = ref<Card | null>(null)
+const draggedCard = ref<Issue | null>(null)
 const draggedFromIndex = ref<number | null>(null)
 const draggedFromColumn = ref<number | null>(null)
 
@@ -40,18 +17,18 @@ const placeholderColumn = ref<number | null>(null)
 const placeholderIndex = ref<number | null>(null)
 
 const refreshPlaceholder = (pCol: number | null, pIndex: number | null) => {
-  console.log('[placeholder]', pCol, pIndex)
+  console.log('[placeholder]', pCol, pIndex, columns.value)
   columns.value = columns.value.map((column) => ({
     ...column,
-    cards: column.cards.filter((card) => card.title !== 'Placeholder')
+    issues: column.issues.filter((card) => card.title !== 'Placeholder')
   }))
 
   if (pCol !== null && pIndex !== null) {
-    columns.value[pCol].cards.splice(pIndex, 0, { title: 'Placeholder' })
+    columns.value[pCol].issues.splice(pIndex, 0, { title: 'Placeholder' } as any)
   }
 }
 
-const onDragStart = (event: DragEvent, card: Card, cardIndex: number, colIndex: number) => {
+const onDragStart = (event: DragEvent, card: Issue, cardIndex: number, colIndex: number) => {
   draggedCard.value = card
   draggedFromIndex.value = cardIndex
   draggedFromColumn.value = colIndex
@@ -66,7 +43,7 @@ const onDragEnterColumn = (event: DragEvent, colIndex: number) => {
       colIndex,
       draggedFromColumn.value,
       placeholderIndex.value,
-      columns.value[colIndex].cards.length
+      columns.value[colIndex].issues.length
     )
 
     // When dragging under the same column
@@ -74,7 +51,7 @@ const onDragEnterColumn = (event: DragEvent, colIndex: number) => {
       refreshPlaceholder(placeholderColumn.value, placeholderIndex.value)
     } else {
       placeholderColumn.value = colIndex
-      placeholderIndex.value = columns.value[colIndex].cards.length // Default to the end of the column
+      placeholderIndex.value = columns.value[colIndex].issues.length // Default to the end of the column
       refreshPlaceholder(placeholderColumn.value, placeholderIndex.value)
     }
   }
@@ -131,10 +108,10 @@ const onDrop = (event: DragEvent, targetColumnIndex: number) => {
     const sourceColumn = columns.value[draggedFromColumn.value]
 
     // Remove the card from its original position in the source column
-    sourceColumn.cards.splice(draggedFromIndex.value!, 1)
+    sourceColumn.issues.splice(draggedFromIndex.value!, 1)
 
     // Add the card to the new position (using the placeholder index)
-    targetColumn.cards.splice(placeholderIndex.value, 0, draggedCard.value)
+    targetColumn.issues.splice(placeholderIndex.value, 0, draggedCard.value as any)
 
     // Clear drag and placeholder state
     draggedCard.value = null
@@ -220,7 +197,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
           v-for="(column, colIndex) in columns"
           :key="colIndex"
           class="min-w-48 min-h-96 w-full bg-slate-200 px-2 kanban-column shadow rounded pb-6 transition-minheight"
-          :style="{ minHeight: `calc(12rem + ${column.cards.length * 80}px` }"
+          :style="{ minHeight: `calc(12rem + ${column.issues.length * 80}px` }"
           @dragover.prevent
           @dragenter.prevent="onDragEnterColumn($event, colIndex)"
           @dragleave="onDragLeave($event)"
@@ -235,29 +212,29 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
             </p>
           </div>
           <div
-            v-for="(card, cardIndex) in column.cards"
+            v-for="(issue, cardIndex) in column.issues"
             :key="cardIndex"
-            :class="`kanban-card cursor-grab ${card.title === 'Placeholder' ? 'placeholder' : ''}`"
+            :class="`kanban-card cursor-grab ${issue.title === 'Placeholder' ? 'placeholder' : ''}`"
             @dragover.prevent="onDragOver($event, cardIndex, colIndex)"
-            @dragstart="onDragStart($event, card, cardIndex, colIndex)"
+            @dragstart="onDragStart($event, issue, cardIndex, colIndex)"
             @dragenter.prevent="onDragEnterCard($event, cardIndex, colIndex)"
             draggable="true"
           >
             <div
-              v-if="card.title === 'Placeholder'"
+              v-if="issue.title === 'Placeholder'"
               class="w-full bg-slate-300 shadow-md p-2 mb-2 transition pointer-events-none h-20 border-dashed border-2 border-slate-500"
             ></div>
             <div
               v-else
-              class="w-full h-20 bg-white shadow-md p-2 mb-2 transition hover:scale-105 hover:shadow-lg pointer-events-none"
+              class="flex flex-col justify-between gap-2 w-full min-h-16 bg-white shadow-md p-2 mb-2 transition hover:scale-105 hover:shadow-lg pointer-events-none"
             >
               <div class="w-full mb-2">
-                <p class="text-sm">{{ card.title }}</p>
+                <p class="text-sm">{{ issue.title }}</p>
               </div>
               <div class="w-full flex flex-row flex-nowrap items-center justify-between">
                 <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
                 <div class="text-xs">AR-1000</div>
-                <IssueTypeIcon :issue="{ type: 'task' }" />
+                <IssueTypeIcon :issue="issue" />
               </div>
             </div>
           </div>

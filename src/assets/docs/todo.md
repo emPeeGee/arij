@@ -29,3 +29,4 @@ Icons: https://flowbite.com/icons/
 ## TODO:
 
 1. Hover on kanban card effect doesn't work
+2. Conflict between column and issue type in the `issue.ts`
