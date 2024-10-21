@@ -59,6 +59,7 @@ export interface Issue {
   id: string
   title: string
   description: string
+  storyPoints?: number
   type: IssueType
   status: IssueStatus
   priority: IssuePriority

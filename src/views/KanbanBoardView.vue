@@ -231,7 +231,6 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
               <div class="w-full">
                 <p class="text-sm">{{ issue.title }}</p>
               </div>
-
               <div v-if="issue.labels" class="flex">
                 <div
                   v-for="label in issue.labels"
@@ -248,7 +247,14 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
                 </div>
               </div>
               <div class="w-full flex flex-row flex-nowrap items-center justify-between">
-                <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
+                <div class="flex flex-row gap-1">
+                  <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
+                  <div class="w-6 h-6 bg-slate-200 rounded-full flex justify-center items-center">
+                    <span class="text-center align-middle text-xs font-bold">
+                      {{ issue.storyPoints || '-' }}
+                    </span>
+                  </div>
+                </div>
                 <div class="text-xs">AR-1000</div>
                 <IssueTypeIcon :issue="issue" />
               </div>
