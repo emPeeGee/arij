@@ -137,7 +137,6 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
     <div class="flex justify-between">
       <h1 class="text-2xl font-semibold">Board</h1>
       <div class="flex gap-1">
-        <Button label="Hello" mode="primary"> </Button>
         <Button mode="primary">
           <template #icon>
             <StarIcon />
@@ -187,7 +186,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
         </div>
       </form>
       <MembersSelect />
-      <Button label="Only my issues" />
+      <Button mode="secondary" label="Only my issues" />
     </div>
 
     <div class="flex items-center justify-center">
@@ -204,7 +203,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
           @drop="onDrop($event, colIndex)"
         >
           <!-- @dragover.prevent="onDragOver($event, column.cards.length, colIndex)" -->
-          <div class="w-full shadow-sm py-2 pb-6">
+          <div class="w-full py-2 pb-6">
             <p
               class="text-sm uppercase text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap"
             >
@@ -228,7 +227,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
               v-else
               class="flex flex-col justify-between gap-2 w-full min-h-16 bg-white shadow-md p-2 mb-2 transition hover:scale-105 hover:shadow-lg pointer-events-none"
             >
-              <div class="w-full mb-2">
+              <div class="w-full">
                 <p class="text-sm">{{ issue.title }}</p>
               </div>
               <div class="w-full flex flex-row flex-nowrap items-center justify-between">
