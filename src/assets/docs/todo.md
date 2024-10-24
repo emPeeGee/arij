@@ -30,3 +30,4 @@ Icons: https://flowbite.com/icons/
 
 1. Hover on kanban card effect doesn't work
 2. Conflict between column and issue type in the `issue.ts`
+3. Dark mode support: https://tailwindcss.com/docs/dark-mode#supporting-system-preference-and-manual-selection

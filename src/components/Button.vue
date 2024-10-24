@@ -14,9 +14,9 @@ const buttonClasses = computed(() => {
     'inline-flex items-center px-2 py-1 rounded transition-all duration-200 ease-in-out active:scale-110 [&>svg]:!text-slate-800'
 
   const modeClasses: Record<string, string> = {
-    primary: 'bg-primary-100  hover:bg-primary-200 ',
+    primary: '[&>svg]:!text-white bg-primary-400  hover:bg-primary-200 ',
     secondary: 'bg-slate-100 hover:bg-slate-300 ',
-    danger: 'bg-red-100 hover:bg-red-200 '
+    danger: '[&>svg]:!text-white bg-red-500 hover:bg-red-600 '
   }
 
   return `${baseClasses} ${modeClasses[mode]}`

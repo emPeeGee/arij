@@ -158,11 +158,7 @@ const onDragOver = (event: DragEvent, cardIndex: number, colIndex: number) => {
     </div>
     <div class="flex justify-start gap-4">
       <form class="max-w-44">
-        <label
-          for="default-search"
-          class="mb-2 text-sm font-medium text-slate-900 sr-only dark:text-white"
-          >Search</label
-        >
+        <label for="default-search" class="sr-only">Search</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg
