@@ -14,9 +14,9 @@ const buttonClasses = computed(() => {
     'inline-flex items-center px-2 py-1 rounded transition-all duration-200 ease-in-out active:scale-110 [&>svg]:!text-slate-800'
 
   const modeClasses: Record<string, string> = {
-    primary: '[&>svg]:!text-white bg-primary-400  hover:bg-primary-200 ',
+    primary: '[&>svg]:!text-white text-white bg-primary-400  hover:bg-primary-200 ',
     secondary: 'bg-slate-100 hover:bg-slate-300 ',
-    danger: '[&>svg]:!text-white bg-red-500 hover:bg-red-600 '
+    danger: '[&>svg]:!text-white text-white bg-red-500 hover:bg-red-600 '
   }
 
   return `${baseClasses} ${modeClasses[mode]}`
@@ -32,6 +32,6 @@ const emitClick = () => {
     <slot name="icon"></slot>
     <!-- Icon Slot (if exists) -->
     <span v-if="$slots.icon && label" class="text-base ml-2">{{ label }}</span>
-    <span v-else-if="label" class="text-base text-slate-800">{{ label }}</span>
+    <span v-else-if="label" class="text-base">{{ label }}</span>
   </button>
 </template>
