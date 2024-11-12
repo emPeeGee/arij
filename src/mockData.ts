@@ -206,7 +206,7 @@ const mockBoard: Board = {
 export const projectData: Project = {
   id: 'project-1',
   name: 'JIRA Clone',
-  key: 'JIR',
+  key: 'ISS',
   description: 'A project management tool like JIRA.',
   lead: mockUsers[0],
   members: mockUsers,
